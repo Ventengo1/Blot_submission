@@ -23,7 +23,7 @@ setDocDimensions(width * 2, height * 2);
 
 const lines = [];
 const triangles = [];
-const circles = [];
+const curve = [];
 
 // Draw the mound
 const moundRadius = 15;
@@ -62,7 +62,6 @@ for (let i = 0; i <= numFencePoints; i++) {
   ]);
 }
 
-
 // Draw the star
 const starPoints = 5;
 const starInnerRadius = 10;
@@ -98,39 +97,19 @@ for (let i = 0; i < starPoints; i++) {
     [199, 7]
   ];
 
-  const outfieldCircleRadius = -6;
-  const outfieldCircleSpacing = 17;
-  const outfieldCircleCenterX = width / 17;
-  const outfieldCircleCenterY = height - fenceRadius - outfieldCircleRadius - -428 - outfieldCircleSpacing;
-
-  const numOutfieldCircles = 5;
-  const angleincrement = 2 * Math.PI / numOutfieldCircles;
-
-  for (let i = 0; i < numOutfieldCircles; i++) {
-    const angle = i * angleincrement;
-    const outfieldCircleX = outfieldCircleCenterX + outfieldCircleSpacing * Math.cos(angle);
-    const outfieldCircleY = outfieldCircleCenterY + outfieldCircleSpacing * Math.sin(angle);
-
-    const numPoints = 30;
-    const angleIncrement = 2 * Math.PI / numPoints;
-    for (let j = 0; j < numPoints; j++) {
-      const angle = j * angleIncrement;
-      const x = outfieldCircleX + outfieldCircleRadius * Math.cos(angle);
-      const y = outfieldCircleY + outfieldCircleRadius * Math.sin(angle);
-      circles.push([
-        [x, y],
-        [outfieldCircleX + outfieldCircleRadius * Math.cos(angle + angleIncrement), outfieldCircleY + outfieldCircleRadius * Math.sin(angle + angleIncrement)]
-      ]);
-    }
-  }
-  drawLines(circles);
+  const curve1 = bt.catmullRom([[178, 209], [165, 219], [177, 233], [190, 222], [178, 209]])
+  const curve2 = bt.catmullRom([[188+5, 219+5], [175+5, 229+5], [187+5, 243+5], [200+5, 232+5], [188+5, 219+5]])
  
- bt.translate(circles, [40, -30]);
+curve.push (curve1);
+curve.push(curve2);
+  
+drawLines(curve);
+  
+bt.translate(curve, [13, -20]);
 
-
-
+  
   bt.translate(triangles, [2, 16]);
-
+  
 
   // Draw the triangles
   triangles.push(triangle1);
@@ -138,23 +117,23 @@ for (let i = 0; i < starPoints; i++) {
   triangles.push(triangle3);
   drawLines(triangles);
 
-
-  lines.push([
+  
+lines.push([
     [innerBaselineSquareOffsetX, innerBaselineSquareOffsetY],
     [innerBaselineSquareOffsetX + innerBaselineSquareSize, innerBaselineSquareOffsetY]
-  ]);
-  lines.push([
+]);
+lines.push([
     [innerBaselineSquareOffsetX + innerBaselineSquareSize, innerBaselineSquareOffsetY],
     [innerBaselineSquareOffsetX + innerBaselineSquareSize, innerBaselineSquareOffsetY + innerBaselineSquareSize]
-  ]);
-  lines.push([
+]);
+lines.push([
     [innerBaselineSquareOffsetX + innerBaselineSquareSize, innerBaselineSquareOffsetY + innerBaselineSquareSize],
     [innerBaselineSquareOffsetX, innerBaselineSquareOffsetY + innerBaselineSquareSize]
-  ]);
-  lines.push([
+]);
+lines.push([
     [innerBaselineSquareOffsetX, innerBaselineSquareOffsetY + innerBaselineSquareSize],
     [innerBaselineSquareOffsetX, innerBaselineSquareOffsetY]
-  ]);
+]);
 
   // Draw the outer square
   lines.push([
